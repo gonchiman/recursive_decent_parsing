@@ -15,6 +15,7 @@ token nextToken;
 void Statement();  // forward declarations
 int Expression(); // (also needed for
 int Term();       //  mutual recursion)
+int Factor();
 
 
 int main () {    
@@ -50,22 +51,40 @@ int Expression() {
         else if (operator == hyphen) {
             r -= Term();
         }
-        else if (operator == asterisk){
-            r *= Term();
-        }
     }
 
     return r;
 }
 
 int Term() {
+    int r = Factor();
+
+    while (nextToken.type == asterisk || nextToken.type == slash) {
+        ttype operator = nextToken.type;
+        nextToken = getNextToken();
+
+        if (operator == asterisk) {
+            r *= Factor();
+        }
+        else if (operator == slash) {
+            r /= Factor();
+        }
+    }
+
+    return r;
+}
+
+int Factor() {
     int r;
-    
+
     if (nextToken.type == number) {
         r = nextToken.val.iv;
         nextToken = getNextToken();
     }
-    else printf("Error: Number expected but not found!\n"), exit(1);
-    
+    else {
+        printf("Error: Number expected but not found!\n");
+        exit(1);
+    }
+
     return r;
 }
