@@ -41,7 +41,7 @@ void Statement() {
 int Expression() {
     int r = Term();
 
-    while (nextToken.type == plus || nextToken.type == hyphen || nextToken.type == asterisk) {
+    while (nextToken.type == plus || nextToken.type == hyphen) {
         ttype operator = nextToken.type;
         nextToken = getNextToken();
 
