@@ -40,13 +40,19 @@ void Statement() {
 int Expression() {
     int r = Term();
 
-    if (nextToken.type == plus) {
-         nextToken = getNextToken();
-         r += Term();
-    }
-    else if (nextToken.type == hyphen) {
-         nextToken = getNextToken();
-         r -= Term();
+    while (nextToken.type == plus || nextToken.type == hyphen || nextToken.type == asterisk) {
+        ttype operator = nextToken.type;
+        nextToken = getNextToken();
+
+        if (operator == plus) {
+            r += Term();
+        }
+        else if (operator == hyphen) {
+            r -= Term();
+        }
+        else if (operator == asterisk){
+            r *= Term();
+        }
     }
 
     return r;
